@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>Password Generator Options</title>
+        <link type="text/css" rel="stylesheet" href="css/options.css" />
+        <script type="text/javascript" src="js/prototype.js"></script>
+        <script type="text/javascript" src="js/scriptaculous.js"></script>
+        <script type="text/javascript" src="js/options.js"></script>
+    </head>
+    <body>
+
+        <form action="javascript:void(0);">
+            <fieldset id="options">
+                <legend>Options</legend>
+                <div><label for="length">Length</label><input id="length" type="text" style="position: relative; top: -5px" /></div>
+                <div><label for="uppercase">Uppercase</label><input class="oneof" id="uppercase" type="checkbox" /></div>
+                <div><label for="lowercase">Lowercase</label><input class="oneof" id="lowercase" type="checkbox" /></div>
+                <div><label for="numbers">Numbers</label><input class="oneof" id="numbers" type="checkbox" /></div>
+                <div><label for="special">Special</label><input class="oneof" id="special" type="checkbox" /></div>
+            </fieldset>
+            <fieldset id="advanced">
+                <legend>Advanced</legend>
+                <div><label for="advcheck">Use advanced</label><input id="advcheck" type="checkbox" /></div>
+                Characters:
+                <input id="custom" type="text" />
+                <span style="font-size: .85em; color: #999">Characters enetered here will be used to generate new passwords.  If a character is repeated, it will increase its chances of occuring in a password.</span>
+            </fieldset>
+
+
+            <button id="save">Save</button><span id="status" style="display: none">Save complete</span>
+        </form>
+    </body>
+</html>

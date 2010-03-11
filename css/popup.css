@@ -1,0 +1,44 @@
+body {
+	font-family: arial;
+    font-size: .81em;
+	min-width: 235px;
+	overflow: hidden;
+}
+a {
+	text-decoration: none;
+	font-size: .9em;
+	display: block;
+	float: right;
+}
+
+fieldset {
+    width: 200px;
+    border: 1px solid black;
+    border-radius: 10px 2px 10px 2px;
+}
+legend {
+    font-weight: bold;
+}
+label {
+    display: block;
+    float: left;
+    width: 150px;
+}
+input {
+}
+#length {
+    width: 30px;
+}
+#custom {
+    width: 199px;
+}
+div {
+    clear: both;
+    height: 20px;
+}
+form {
+    margin: auto;
+}
+#status {
+    color: red;
+}

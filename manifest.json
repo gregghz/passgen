@@ -1,0 +1,14 @@
+{
+	"name": "Password Generator",
+	"version": "0.5",
+	"description": "A password generator for the security minded",
+	"browser_action": {
+		"default_icon": "key.png",
+		"popup": "popup.html"
+	},
+	"options_page": "options.html",
+	"icons": {
+		"48": "key48.png",
+		"128": "key128.png"
+	}
+}
