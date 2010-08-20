@@ -1,6 +1,6 @@
 {
 	"name": "Password Generator",
-	"version": "0.5",
+	"version": "1.0",
 	"description": "A password generator for the security minded",
 	"browser_action": {
 		"default_icon": "key.png",

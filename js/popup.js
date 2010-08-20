@@ -38,24 +38,41 @@ Clipboard.copy = function(data) {
 var Password = new Class({
 	initialize: function (elem, options) {
 		this.text_box = $(elem);
+		this.pass = '';
 		
 		this.setOptions(options);
 		this.generate();
+		this.output();
 	},
 	generate: function () {
-		
+		this.pass = Math.random();
+	},
+	get: function () {
+		return this.pass;
+	},
+	output: function () {
+		this.text_box.value = this.get();
 	},
 	setOptions: function (options) {
 		this.options = {}
 		var defaults = {
-			length: 8,
+			len: 8,
 			upper: true,
 			lower: true,
 			number: true,
 			special: true
 		}
 		
-		this.options.length = 
+		if (!options) {
+			this.options = defaults;
+			return;
+		}
+
+		this.options.len = options.len ? options.len : defaults.len;
+		this.options.upper = options.upper ? options.upper : defaults.upeer;
+		this.options.lower = options.lower ? options.lower : defaults.lower;
+		this.options.number = options.number ? options.number : defaults.number;
+		this.options.special = options.special ? options.special : defaults.special;
 	}
 });
 
