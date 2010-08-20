@@ -16,7 +16,7 @@
     
     Copyright 2010 Greggory Hernandez
 */
-Clipboard = {}; 
+/*Clipboard = {}; 
 Clipboard.utilities = {}; 
 Clipboard.utilities.createTextArea = function(value) { 
     var txt = document.createElement('textarea'); 
@@ -33,7 +33,22 @@ Clipboard.copy = function(data) {
     passgen_txt.select();
     document.execCommand('Copy'); 
     document.body.removeChild(passgen_txt); 
-};
+};*/
+var Clipboard = new Class({
+    initialize: function (target) {
+        this.target = $(target);
+        this.txt = new Element('textarea');
+        this.txt.style.position = 'absolute';
+        this.txt.style.left = '-100%';
+    },
+    copy: function () {
+        this.txt.value = this.target.value;
+        document.body.appendChild(this.txt);
+        this.txt.select();
+        document.execCommand('Copy');
+        document.boyd.removeChild(this.txt);
+    }
+});
 
 var Password = new Class({
 	initialize: function (elem, options) {
@@ -46,6 +61,7 @@ var Password = new Class({
 	},
 	generate: function () {
 		this.pass = Math.random();
+		
 	},
 	get: function () {
 		return this.pass;
@@ -60,7 +76,8 @@ var Password = new Class({
 			upper: true,
 			lower: true,
 			number: true,
-			special: true
+			special: true,
+			after_generate: function () {}
 		}
 		
 		if (!options) {
@@ -73,9 +90,13 @@ var Password = new Class({
 		this.options.lower = options.lower ? options.lower : defaults.lower;
 		this.options.number = options.number ? options.number : defaults.number;
 		this.options.special = options.special ? options.special : defaults.special;
+		this.options.after_generate = options.after_generate ? options.after_generate : defaults.after_generate;
 	}
 });
 
 document.addEvent('domready', function () {
-	var pass = new Password('password');
+    var clipboard = new Clipboard('password');
+	var pass = new Password('password', {
+	    after_generate: clipboard.copy.bind(clipboard)
+	});
 });
