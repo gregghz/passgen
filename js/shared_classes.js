@@ -1,4 +1,4 @@
-<!--
+/*
 	This file is part of Password Generator.
 
     Password Generator is free software: you can redistribute it and/or modify
@@ -15,20 +15,28 @@
     along with Password Generator.  If not, see <http://www.gnu.org/licenses/>.
     
     Copyright 2010 Greggory Hernandez
--->
-<html style="height: 25px;">
-    <head>
-        <title>Password Generator</title>
-        <link type="text/css" rel="stylesheet" href="css/popup.css" />
-    </head>
-    <body>
-        <div id="wrap">
-	        <input type="text" value="" id="password" />
-	        <input type="button" value="Reload" id="reload" />
-        </div>
-        <!-- load js last -->
-        <script type="text/javascript" src="js/mootools.js"></script>
-        <script type="text/javascript" src="js/shared_classes.js"></script>
-        <script type="text/javascript" src="js/popup.js"></script>
-    </body>
-</html>
+*/
+
+var Options = new Class({
+	initialize: function () {
+		/* if localStorage options haven't been set, set the defaults */
+		if (!this.get('options_set')) {
+			this.set('len', 8);
+			this.set('upper', true);
+			this.set('lower', true);
+			this.set('number', true);
+			this.set('special', true);
+			this.set('use_advanced', false);
+			this.set('advanced_chars', '');
+			this.set('options_set', true);
+		}
+	},
+	set: function (key, value) {
+		localStorage.setItem(key, value);
+	},
+	get: function (key) {
+		if (localStorage.getItem(key) == 'true' || localStorage.getItem(key) == 'false')
+			return localStorage.getItem(key) == 'true' ? true : false;
+		return localStorage.getItem(key);
+	}
+});

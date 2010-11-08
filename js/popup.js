@@ -46,75 +46,59 @@ var Clipboard = new Class({
     }
 });
 
-var Options = new Class({
-	initialize: function () {
-		/* if localStorage options haven't been set, set the defaults */
-		if (!this.get('options_set')) {
-			this.set('len', 8);
-			this.set('upper', true);
-			this.set('lower', true);
-			this.set('number', true);
-			this.set('special', true);
-			this.set('options_set', true);
-		}
-	},
-	set: function (key, value) {
-		localStorage.setItem(key, value);
-	},
-	get: function (key) {
-		return localStorage.getItem(key);
-	}
-});
-
 var Password = new Class({
-	initialize: function (elem, options, callbacks) {
-		this.text_box = $(elem);
-		this.pass = '';
-		this.options = options;
-		this.callbacks = callbacks;
-		
-		this.generate();
-		this.output();
-	},
-	attachReloadButton: function (button) {
-    	$(button).addEvent('click', function () {
-    	    this.generate();
-    	    this.output();
-    	}.bind(this));
-	},
-	generate: function () {
-	    /* figure out what characters we can use */
-		var chars = '';
-		if (this.options.get('upper'))
-		    chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		if (this.options.get('lower'))
-		    chars += 'abcdefghijklmnopqrstuvwxyz';
-		if (this.options.get('number'))
-		    chars += '1234567890';
-		if (this.options.get('special'))
-		    chars += '~!@#$%^&*()_+`-={}|[]\\:";\'<>?,./';
-		
-		/* build the password */
-		this.pass = '';
-		for (var i = 0; i < this.options.get('len'); i++) {
-		    var index = Math.floor(Math.random()*chars.length);
-		    this.pass += chars.charAt(index);
-		}
-	},
-	get: function () {
-		return this.pass;
-	},
-	output: function () {
-		this.text_box.value = this.get();
-		this.callbacks.on_output();
-	}
+    initialize: function (elem, options, callbacks) {
+        this.text_box = $(elem);
+        this.pass = '';
+        this.options = options;
+        this.callbacks = callbacks;
+
+        this.generate();
+        this.output();
+    },
+    attachReloadButton: function (button) {
+        $(button).addEvent('click', function () {
+            this.generate();
+            this.output();
+        }.bind(this));
+    },
+    generate: function () {
+        /* figure out what characters we can use */
+        var chars = this.options.get('use_advanced') ? this.options.get('advanced_chars') : '';
+
+        if (chars == '') {
+            if (this.options.get('upper'))
+                chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if (this.options.get('lower'))
+                chars += 'abcdefghijklmnopqrstuvwxyz';
+            if (this.options.get('number'))
+                chars += '1234567890';
+            if (this.options.get('special'))
+                chars += '~!@#$%^&*()_+`-={}|[]\\:";\'<>?,./';
+        }
+
+        /* build the password */
+        this.pass = '';
+        for (var i = 0; i < this.options.get('len'); i++) {
+            var index = Math.floor(Math.random()*chars.length);
+            this.pass += chars.charAt(index);
+        }
+    },
+    get: function () {
+        return this.pass;
+    },
+    output: function () {
+        this.text_box.value = this.get();
+        this.callbacks.on_output();
+    }
 });
 
 /* fixing an annoying problem in Chrome 9 */
-$('wrap').setStyle('width', '235px');
+if ($('wrap').getStyle('width') != '235px')
+    $('wrap').setStyle('width', '235px');
 
 var clipboard = new Clipboard('password');
 var pass = new Password('password', new Options(), {
-	on_output: clipboard.copy.bind(clipboard)
+    on_output: clipboard.copy.bind(clipboard)
 });
 pass.attachReloadButton('reload');

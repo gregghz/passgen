@@ -17,5 +17,9 @@
     Copyright 2010 Greggory Hernandez
 */
 body {
-    height: 20px;
+    height: 25px;
+}
+#wrap {
+    height: 25px;
+    width: 235px;
 }
