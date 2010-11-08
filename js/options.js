@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with Password Generator.  If not, see <http://www.gnu.org/licenses/>.
     
-    Copyright 2010 Greggory Hernandez
+    Copyright 2010 Greggory Hernandez <greggory.hz@gmail.com>
 */
 
 var OptionsForm = new Class({
