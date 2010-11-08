@@ -79,6 +79,11 @@ var Password = new Class({
 
         /* build the password */
         this.pass = '';
+        
+        /* handle counted chars */
+        if (parseInt(this.options.get('upper_count')) > 0) {}
+            //this.pass = this.
+        
         for (var i = 0; i < this.options.get('len'); i++) {
             var index = Math.floor(Math.random()*chars.length);
             this.pass += chars.charAt(index);

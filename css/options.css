@@ -38,6 +38,15 @@ input {
 #len {
     width: 30px;
 }
+.small {
+    width: 30px;
+    position: relative;
+    top: -5px;
+}
+.note {
+    font-size: .85em;
+    color: #999;
+}
 #custom {
     width: 199px;
 }

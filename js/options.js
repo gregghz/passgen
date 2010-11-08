@@ -23,36 +23,33 @@ var OptionsForm = new Class({
 		this.initializeData();
 	},
 	initializeData: function () {
-		this.initializeCheckboxes();
-		this.initializeTextfields();
-	},
-	initializeCheckboxes: function () {
-		var checkboxes = ['upper', 'lower', 'number', 'special', 'use_advanced']
-		checkboxes.each(function (key) {
-			this[key] = $(key);
-			this[key].checked = this.options.get(key);
-			this[key].addEvent('change', this.save.bind(this));
+		var fields = ['advanced_chars', 'len', 'lower', 'lower_count', 'number', 'number_count', 'special', 'special_count', 'upper', 'upper_count', 'use_advanced']
+		fields.each(function (key) {
+		    this[key] = $(key);
+		    var event = 'change';
+		    
+		    if (this[key].type == 'checkbox') {
+		        this[key].checked = this.options.get(key);
+		    }
+		    else if (this[key].type == 'text') {
+		        /* since it's a text type, we want to watch for the keyup event */
+		        event = 'keyup';
+		        this[key].value = this.options.get(key);
+		    }
+		    
+		    console.log(key + ' = ', this.options.get(key));
+		    /* both type use the same event */
+		    this[key].addEvent(event, this.save.bind(this));
 		}.bind(this));
-	},
-	initializeTextfields: function () {
-		this.len = $('len');
-		this.len.value = this.options.get('len');
-		this.len.addEvent('change', this.save.bind(this));
-		
-		this.advanced_chars = $('advanced_chars');
-		this.advanced_chars.value = this.options.get('advanced_chars');
-		this.advanced_chars.addEvent('change', this.save.bind(this));
 	},
 	save: function (event) {
 		var form_field = event.target;
 		
 		if (form_field.type == 'checkbox') {
 			this.options.set(form_field.id, form_field.checked);
-			console.log(form_field.id + ', ' + form_field.checked);
 		}
 		else if (form_field.get('type') == 'text') {
 			this.options.set(form_field.id, form_field.value);
-			console.log(form_field.id + ', ' + form_field.value);
 		}
 	}
 });

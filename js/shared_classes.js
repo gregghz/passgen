@@ -20,16 +20,25 @@
 var Options = new Class({
 	initialize: function () {
 		/* if localStorage options haven't been set, set the defaults */
-		if (!this.get('options_set')) {
-			this.set('len', 8);
-			this.set('upper', true);
-			this.set('lower', true);
-			this.set('number', true);
-			this.set('special', true);
-			this.set('use_advanced', false);
-			this.set('advanced_chars', '');
-			this.set('options_set', true);
-		}
+        var defaults = {
+            len: 8,
+			upper: true,
+			lower: true,
+			number: true,
+			special: true,
+			use_advanced: false,
+			advanced_chars: '',
+			upper_count: 0,
+			lower_count: 0,
+			number_count: 0,
+			special_count: 0
+        }
+		
+		var fields = ['advanced_chars', 'len', 'lower', 'lower_count', 'number', 'number_count', 'special', 'special_count', 'upper', 'upper_count', 'use_advanced']
+		fields.each(function (key) {
+		    if (!localStorage.getItem(key))
+		        this.set(key, defaults[key]);
+		}.bind(this));
 	},
 	set: function (key, value) {
 		localStorage.setItem(key, value);

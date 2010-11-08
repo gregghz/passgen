@@ -26,7 +26,7 @@
         <form id="options_form" action="javascript:void(0);">
             <fieldset id="options">
                 <legend>Options</legend>
-                <div><label for="len">Length</label><input id="len" type="text" style="position: relative; top: -5px" /></div>
+                <div><label for="len">Length</label><input id="len" class="small" type="text" /></div>
                 <div><label for="upper">Uppercase</label><input class="oneof" id="upper" type="checkbox" /></div>
                 <div><label for="lower">Lowercase</label><input class="oneof" id="lower" type="checkbox" /></div>
                 <div><label for="number">Numbers</label><input class="oneof" id="number" type="checkbox" /></div>
@@ -35,13 +35,21 @@
             <fieldset id="advanced">
                 <legend>Advanced</legend>
                 <div><label for="use_advanced">Use advanced</label><input id="use_advanced" type="checkbox" /></div>
-                Characters:
-                <input id="advanced_chars" type="text" />
-                <span style="font-size: .85em; color: #999">Characters enetered here will be used to generate new passwords.  If a character is repeated, it will increase its chances of occuring in a password.</span>
+                <p class="note">
+                    Characters enetered below will be used to generate new passwords.  If a character is repeated, it will increase its chances of occuring in a password. If it is empty, the checkboxes above will be used.
+                </p>
+                <p>
+                    Characters:
+                    <input id="advanced_chars" type="text" />
+                </p>
+                <p class="note">
+                    For all options below, 0 means to ignore the count. If you really want 0 use the checkboxes above.
+                </p>
+                <div><label for="upper_count">Uppercase count</label><input id="upper_count" class="small" type="text" /></div>
+                <div><label for="lower_count">Lowercase count</label><input id="lower_count" class="small" type="text" /></div>
+                <div><label for="number_count">Number count</label><input id="number_count" class="small" type="text" /></div>
+                <div><label for="special_count">Special count</label><input id="special_count" class="small" type="text" /></div>
             </fieldset>
-
-
-            <button id="save">Save</button><span id="status" style="display: none">Save complete</span>
         </form>
         
         <!-- load js last -->
