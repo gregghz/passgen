@@ -16,37 +16,33 @@
     
     Copyright 2010 Greggory Hernandez
 */
-/*Clipboard = {}; 
-Clipboard.utilities = {}; 
-Clipboard.utilities.createTextArea = function(value) { 
-    var txt = document.createElement('textarea'); 
-    txt.style.position = "absolute"; 
-    txt.style.left = "-100%"; 
-    if (value != null) 
-        txt.value = value; 
-    document.body.appendChild(txt); 
-    return txt; 
-}; 
-Clipboard.copy = function(data) { 
-    if (data == null) return; 
-    var passgen_txt = Clipboard.utilities.createTextArea(data); 
-    passgen_txt.select();
-    document.execCommand('Copy'); 
-    document.body.removeChild(passgen_txt); 
-};*/
+
+/**
+ * Clipboard
+ * Handles copying the newly generated password to user's clipboard
+ */
 var Clipboard = new Class({
+    /**
+     * initialize
+     * Clipboard constructor
+     * target - id or element that contains text to copy
+     */
     initialize: function (target) {
         this.target = $(target);
         this.txt = new Element('textarea');
         this.txt.style.position = 'absolute';
         this.txt.style.left = '-100%';
     },
+    /**
+     * copy
+     * triggers the copying of the value of this.target
+     */
     copy: function () {
         this.txt.value = this.target.value;
         document.body.appendChild(this.txt);
         this.txt.select();
         document.execCommand('Copy');
-        document.boyd.removeChild(this.txt);
+        document.body.removeChild(this.txt);
     }
 });
 
@@ -59,15 +55,36 @@ var Password = new Class({
 		this.generate();
 		this.output();
 	},
+	attachReloadButton: function (button) {
+    	$(button).addEvent('click', function () {
+    	    this.generate();
+    	    this.output();
+    	}.bind(this));
+	},
 	generate: function () {
-		this.pass = Math.random();
+	    /* figure out what characters we can use */
+		var chars = '';
+		if (this.options.upper)
+		    chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		if (this.options.lower)
+		    chars += 'abcdefghijklmnopqrstuvwxyz';
+		if (this.options.number)
+		    chars += '1234567890';
+		if (this.options.special)
+		    chars += '~!@#$%^&*()_+`-={}|[]\\:";\'<>?,./';
 		
+		this.pass = '';
+		for (var i = 0; i < this.options.len; i++) {
+		    var index = Math.floor(Math.random()*chars.length);
+		    this.pass += chars.charAt(index);
+		}
 	},
 	get: function () {
 		return this.pass;
 	},
 	output: function () {
 		this.text_box.value = this.get();
+		this.options.on_output();
 	},
 	setOptions: function (options) {
 		this.options = {}
@@ -77,12 +94,7 @@ var Password = new Class({
 			lower: true,
 			number: true,
 			special: true,
-			after_generate: function () {}
-		}
-		
-		if (!options) {
-			this.options = defaults;
-			return;
+			on_output: function () {}
 		}
 
 		this.options.len = options.len ? options.len : defaults.len;
@@ -90,13 +102,16 @@ var Password = new Class({
 		this.options.lower = options.lower ? options.lower : defaults.lower;
 		this.options.number = options.number ? options.number : defaults.number;
 		this.options.special = options.special ? options.special : defaults.special;
-		this.options.after_generate = options.after_generate ? options.after_generate : defaults.after_generate;
+		this.options.on_output = options.on_output ? options.on_output : defaults.on_output;
 	}
 });
 
-document.addEvent('domready', function () {
-    var clipboard = new Clipboard('password');
-	var pass = new Password('password', {
-	    after_generate: clipboard.copy.bind(clipboard)
-	});
-});
+$('wrap').setStyle('width', '235px');
+
+var clipboard = new Clipboard('password');
+
+var options = localStorage;
+options.on_output = clipboad.copy.bind(clipboard);
+
+var pass = new Password('password', options);
+pass.attachReloadButton('reload');
