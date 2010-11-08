@@ -46,12 +46,33 @@ var Clipboard = new Class({
     }
 });
 
+var Options = new Class({
+	initialize: function () {
+		/* if localStorage options haven't been set, set the defaults */
+		if (!this.get('options_set')) {
+			this.set('len', 8);
+			this.set('upper', true);
+			this.set('lower', true);
+			this.set('number', true);
+			this.set('special', true);
+			this.set('options_set', true);
+		}
+	},
+	set: function (key, value) {
+		localStorage.setItem(key, value);
+	},
+	get: function (key) {
+		return localStorage.getItem(key);
+	}
+});
+
 var Password = new Class({
-	initialize: function (elem, options) {
+	initialize: function (elem, options, callbacks) {
 		this.text_box = $(elem);
 		this.pass = '';
+		this.options = options;
+		this.callbacks = callbacks;
 		
-		this.setOptions(options);
 		this.generate();
 		this.output();
 	},
@@ -64,17 +85,18 @@ var Password = new Class({
 	generate: function () {
 	    /* figure out what characters we can use */
 		var chars = '';
-		if (this.options.upper)
+		if (this.options.get('upper'))
 		    chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		if (this.options.lower)
+		if (this.options.get('lower'))
 		    chars += 'abcdefghijklmnopqrstuvwxyz';
-		if (this.options.number)
+		if (this.options.get('number'))
 		    chars += '1234567890';
-		if (this.options.special)
+		if (this.options.get('special'))
 		    chars += '~!@#$%^&*()_+`-={}|[]\\:";\'<>?,./';
 		
+		/* build the password */
 		this.pass = '';
-		for (var i = 0; i < this.options.len; i++) {
+		for (var i = 0; i < this.options.get('len'); i++) {
 		    var index = Math.floor(Math.random()*chars.length);
 		    this.pass += chars.charAt(index);
 		}
@@ -84,34 +106,15 @@ var Password = new Class({
 	},
 	output: function () {
 		this.text_box.value = this.get();
-		this.options.on_output();
-	},
-	setOptions: function (options) {
-		this.options = {}
-		var defaults = {
-			len: 8,
-			upper: true,
-			lower: true,
-			number: true,
-			special: true,
-			on_output: function () {}
-		}
-
-		this.options.len = options.len ? options.len : defaults.len;
-		this.options.upper = options.upper ? options.upper : defaults.upeer;
-		this.options.lower = options.lower ? options.lower : defaults.lower;
-		this.options.number = options.number ? options.number : defaults.number;
-		this.options.special = options.special ? options.special : defaults.special;
-		this.options.on_output = options.on_output ? options.on_output : defaults.on_output;
+		this.callbacks.on_output();
 	}
 });
 
+/* fixing an annoying problem in Chrome 9 */
 $('wrap').setStyle('width', '235px');
 
 var clipboard = new Clipboard('password');
-
-var options = localStorage;
-options.on_output = clipboad.copy.bind(clipboard);
-
-var pass = new Password('password', options);
+var pass = new Password('password', new Options(), {
+	on_output: clipboard.copy.bind(clipboard)
+});
 pass.attachReloadButton('reload');
