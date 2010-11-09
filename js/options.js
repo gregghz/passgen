@@ -17,41 +17,39 @@
     Copyright 2010 Greggory Hernandez <greggory.hz@gmail.com>
 */
 
-var OptionsForm = new Class({
-	initialize: function (ele) {
-		this.options = new Options();
-		this.initializeData();
-	},
-	initializeData: function () {
-		var fields = ['advanced_chars', 'len', 'lower', 'lower_count', 'number', 'number_count', 'special', 'special_count', 'upper', 'upper_count', 'use_advanced']
-		fields.each(function (key) {
-		    this[key] = $(key);
-		    var event = 'change';
-		    
-		    if (this[key].type == 'checkbox') {
-		        this[key].checked = this.options.get(key);
-		    }
-		    else if (this[key].type == 'text') {
-		        /* since it's a text type, we want to watch for the keyup event */
-		        event = 'keyup';
-		        this[key].value = this.options.get(key);
-		    }
-		    
-		    console.log(key + ' = ', this.options.get(key));
-		    /* both type use the same event */
-		    this[key].addEvent(event, this.save.bind(this));
-		}.bind(this));
-	},
-	save: function (event) {
-		var form_field = event.target;
-		
-		if (form_field.type == 'checkbox') {
-			this.options.set(form_field.id, form_field.checked);
-		}
-		else if (form_field.get('type') == 'text') {
-			this.options.set(form_field.id, form_field.value);
-		}
+function OptionsForm(ele) {
+    this.options = new Options();
+    this.initializeData();
+}
+OptionsForm.prototype.initializeData = function () {
+    var fields = ['advanced_chars', 'len', 'lower', 'lower_count', 'number', 'number_count', 'special', 'special_count', 'upper', 'upper_count', 'use_advanced']
+    /* once moo tools is completely removed, this can be changed to:
+    for (i in fields) { */
+    for (var i = 0; i < fields.length; i++) {
+        var key = fields[i];
+        this[key] = document.getElementById(key);
+        var event = 'change';
+        
+        if (this[key].type == 'checkbox') {
+            this[key].checked = this.options.get(key);
+        }
+        else if (this[key].type == 'text') {
+            event = 'keyup';
+            this[key].value = this.options.get(key);
+        }
+        
+        this[key].addEventListener(event, this.save.bind(this));
+    }
+}
+OptionsForm.prototype.save = function (event) {
+	var form_field = event.target;
+	
+	if (form_field.type == 'checkbox') {
+		this.options.set(form_field.id, form_field.checked);
 	}
-});
+	else if (form_field.type == 'text') {
+		this.options.set(form_field.id, form_field.value);
+	}
+}
 
 new OptionsForm('options_form');
