@@ -21,86 +21,71 @@
  * Clipboard
  * Handles copying the newly generated password to user's clipboard
  */
-var Clipboard = new Class({
-    /**
-     * initialize
-     * Clipboard constructor
-     * target - id or element that contains text to copy
-     */
-    initialize: function (target) {
-        this.target = $(target);
-        this.txt = new Element('textarea');
-        this.txt.style.position = 'absolute';
-        this.txt.style.left = '-100%';
-    },
-    /**
-     * copy
-     * triggers the copying of the value of this.target
-     */
-    copy: function () {
-        this.txt.value = this.target.value;
-        document.body.appendChild(this.txt);
-        this.txt.select();
-        document.execCommand('Copy');
-        document.body.removeChild(this.txt);
-    }
-});
+function Clipboard(target) {
+    this.target = document.getElementById(target);
+    this.txt = document.createElement('textarea');
+    this.txt.style.position = 'absolute';
+    this.txt.style.left = '-100%';
+}
+Clipboard.prototype.copy = function () {
+    this.txt.value = this.target.value;
+    document.body.appendChild(this.txt);
+    this.txt.select();
+    document.execCommand('Copy');
+    document.body.removeChild(this.txt);
+}
 
-var Password = new Class({
-    initialize: function (elem, options, callbacks) {
-        this.text_box = $(elem);
-        this.pass = '';
-        this.options = options;
-        this.callbacks = callbacks;
-
+function Password(elem, options, callbacks) {
+    this.text_box = document.getElementById(elem);
+    this.pass = '';
+    this.options = options;
+    this.callbacks = callbacks;
+    
+    this.generate();
+    this.output();
+}
+Password.prototype.attachReloadButton = function (button) {
+    button = document.getElementById(button);
+    button.addEventListener('click', function () {
         this.generate();
         this.output();
-    },
-    attachReloadButton: function (button) {
-        $(button).addEvent('click', function () {
-            this.generate();
-            this.output();
-        }.bind(this));
-    },
-    generate: function () {
-        /* figure out what characters we can use */
-        var chars = this.options.get('use_advanced') ? this.options.get('advanced_chars') : '';
-
-        if (chars == '') {
-            if (this.options.get('upper'))
-                chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            if (this.options.get('lower'))
-                chars += 'abcdefghijklmnopqrstuvwxyz';
-            if (this.options.get('number'))
-                chars += '1234567890';
-            if (this.options.get('special'))
-                chars += '~!@#$%^&*()_+`-={}|[]\\:";\'<>?,./';
-        }
-
-        /* build the password */
-        this.pass = '';
-        
-        /* handle counted chars */
-        if (parseInt(this.options.get('upper_count')) > 0) {}
-            //this.pass = this.
-        
-        for (var i = 0; i < this.options.get('len'); i++) {
-            var index = Math.floor(Math.random()*chars.length);
-            this.pass += chars.charAt(index);
-        }
-    },
-    get: function () {
-        return this.pass;
-    },
-    output: function () {
-        this.text_box.value = this.get();
-        this.callbacks.on_output();
+    }.bind(this));
+}
+Password.prototype.generate = function () {
+    var chars = this.options.get('use_advanced') ? this.options.get('advanced_chars') : '';
+    
+    if (chars == '') {
+        if (this.options.get('upper'))
+            chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        if (this.options.get('lower'))
+            chars += 'abcdefghijklmnopqrstuvwxyz';
+        if (this.options.get('number'))
+            chars += '1234567890';
+        if (this.options.get('special'))
+            chars += '~!@#$%^&*()_+`-={}|[]\\:";\'<>?,./';
     }
-});
+    
+    this.pass = '';
+    
+    // TODO:
+    if (parseInt(this.options.get('upper_count')) > 0) {}
+    
+    for (var i = 0; i < this.options.get('len'); i++) {
+        var index = Math.floor(Math.random()*chars.length);
+        this.pass += chars.charAt(index);
+    }
+}
+Password.prototype.get = function () {
+    return this.pass;
+}
+Password.prototype.output = function () {
+    this.text_box.value = this.get();
+    this.callbacks.on_output();
+}
 
 /* fixing an annoying problem in Chrome 9 */
-if ($('wrap').getStyle('width') != '235px')
-    $('wrap').setStyle('width', '235px');
+if (document.getElementById('wrap').style.width != '235px')
+    document.getElementById('wrap').style.width = '235px';
 
 var clipboard = new Clipboard('password');
 var pass = new Password('password', new Options(), {

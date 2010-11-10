@@ -22,11 +22,8 @@ function OptionsForm(ele) {
     this.initializeData();
 }
 OptionsForm.prototype.initializeData = function () {
-    var fields = ['advanced_chars', 'len', 'lower', 'lower_count', 'number', 'number_count', 'special', 'special_count', 'upper', 'upper_count', 'use_advanced']
-    /* once moo tools is completely removed, this can be changed to:
-    for (i in fields) { */
-    for (var i = 0; i < fields.length; i++) {
-        var key = fields[i];
+    for (i in Options.fields) {
+        var key = Options.fields[i];
         this[key] = document.getElementById(key);
         var event = 'change';
         
