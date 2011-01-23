@@ -35,13 +35,15 @@ label {
 }
 input {
 }
-#len {
-    width: 30px;
-}
-.small {
-    width: 30px;
+.small, .medium {
     position: relative;
     top: -5px;
+}
+.small {
+    width: 25px;
+}
+.medium {
+    width: 50px;
 }
 .note {
     font-size: .85em;

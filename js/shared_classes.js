@@ -24,6 +24,7 @@ function Options() {
 		lower: true,
 		number: true,
 		special: true,
+		exclude: '',
 		use_advanced: false,
 		advanced_chars: '',
 		upper_count: 0,
@@ -38,7 +39,7 @@ function Options() {
             this.set(key, defaults[key]);
     }
 }
-Options.fields = ['advanced_chars', 'len', 'lower', 'lower_count', 'number', 'number_count', 'special', 'special_count', 'upper', 'upper_count', 'use_advanced']
+Options.fields = ['advanced_chars', 'exclude', 'len', 'lower', 'lower_count', 'number', 'number_count', 'special', 'special_count', 'upper', 'upper_count', 'use_advanced']
 Options.prototype.set = function (key, value) {
     localStorage.setItem(key, value);
 },

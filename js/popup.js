@@ -63,7 +63,17 @@ Password.prototype.generate = function () {
             chars += '1234567890';
         if (this.options.get('special'))
             chars += '~!@#$%^&*()_+`-={}|[]\\:";\'<>?,./';
+            
+        if (this.options.get('exclude')) {
+            console.log('exclude');
+            var excluded_chars = this.options.get('exclude');
+            for (var i = 0; i < excluded_chars.length; i++) {
+                chars = chars.replace(excluded_chars.charAt(i), '');
+            }
+        }
     }
+    
+    console.log(chars);
     
     this.pass = '';
     
