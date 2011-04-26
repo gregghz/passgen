@@ -28,6 +28,12 @@ function Clipboard(target) {
     this.txt.style.left = '-100%';
 }
 Clipboard.prototype.copy = function () {
+    console.log('hi');
+    if ((localStorage['clipboard_copy'] == true) || (localStorage['clipboard_copy'] == "true")) {
+        //Proceed to copy
+    } else {
+        return;
+    }
     this.txt.value = this.target.value;
     document.body.appendChild(this.txt);
     this.txt.select();
