@@ -85,9 +85,12 @@ Password.prototype.generate = function () {
     
     // TODO:
     if (parseInt(this.options.get('upper_count')) > 0) {}
-    
-    for (var i = 0; i < this.options.get('len'); i++) {
-        var index = Math.floor(Math.random()*chars.length);
+
+    var len = this.options.get('len');
+    var rnd = new Uint32Array(len);
+    crypto.getRandomValues(rnd);
+    for (var i = 0; i < len; i++) {
+        var index = rnd[i] % chars.length;
         this.pass += chars.charAt(index);
     }
 }
