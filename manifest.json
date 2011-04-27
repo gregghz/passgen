@@ -1,5 +1,5 @@
 {
-	"name": "Password Generator",
+	"name": "Password Generator (Open Source)",
 	"version": "1.2",
 	"description": "A password generator for the security minded",
 	"browser_action": {
