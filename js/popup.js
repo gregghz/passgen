@@ -88,7 +88,7 @@ Password.prototype.generate = function () {
 
     var len = this.options.get('len');
     var rnd = new Uint32Array(len);
-    if (typeof crypto.getRandomValues == 'undefined') {
+    if (!crypto || !crypto.getRandomValues) {
       // Too old version of Chrome that does not support
       // cryptographically secure PRNG.
       // TODO: remove this fallback when Chrome 11 released.
