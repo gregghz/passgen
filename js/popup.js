@@ -28,16 +28,15 @@ function Clipboard(target) {
     this.txt.style.left = '-100%';
 }
 Clipboard.prototype.copy = function () {
-    if ((localStorage['clipboard_copy'] == true) || (localStorage['clipboard_copy'] == "true")) {
-        //Proceed to copy
-    } else {
-        return;
+    var options = new Options();
+
+    if (options.get('clipboard_copy')) {
+        this.txt.value = this.target.value;
+        document.body.appendChild(this.txt);
+        this.txt.select();
+        document.execCommand('Copy');
+        document.body.removeChild(this.txt);
     }
-    this.txt.value = this.target.value;
-    document.body.appendChild(this.txt);
-    this.txt.select();
-    document.execCommand('Copy');
-    document.body.removeChild(this.txt);
 }
 
 function Password(elem, options, callbacks) {
