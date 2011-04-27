@@ -25,13 +25,20 @@
 
         <form id="options_form" action="javascript:void(0);">
             <fieldset id="options">
-                <legend>Options</legend>
+                <legend>Password Options</legend>
                 <div><label for="len">Length</label><input id="len" class="small" type="text" /></div>
                 <div><label for="upper">Uppercase</label><input class="oneof" id="upper" type="checkbox" /></div>
                 <div><label for="lower">Lowercase</label><input class="oneof" id="lower" type="checkbox" /></div>
                 <div><label for="number">Numbers</label><input class="oneof" id="number" type="checkbox" /></div>
                 <div><label for="special">Special</label><input class="oneof" id="special" type="checkbox" /></div>
                 <div><label for="exclude">Exclude</label><input class="medium" id="exclude" type="text" /></div>
+            </fieldset>
+            <fieldset id="settings">
+                <legend>Settings</legend>
+                <div>
+                    <label for="clipboard_copy">Automatically copy to clipboard</label>
+                    <input class="" id="clipboard_copy" type="checkbox" />
+                </div>
             </fieldset>
             <fieldset id="advanced">
                 <legend>Advanced</legend>
