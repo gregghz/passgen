@@ -28,7 +28,6 @@ function Clipboard(target) {
     this.txt.style.left = '-100%';
 }
 Clipboard.prototype.copy = function () {
-    console.log('hi');
     if ((localStorage['clipboard_copy'] == true) || (localStorage['clipboard_copy'] == "true")) {
         //Proceed to copy
     } else {
@@ -78,8 +77,6 @@ Password.prototype.generate = function () {
             }
         }
     }
-    
-    console.log(chars);
     
     this.pass = '';
     
